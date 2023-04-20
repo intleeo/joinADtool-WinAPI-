@@ -1,1 +1,5 @@
 # joinADtoolstest
+
+手动修改ADdmain和username以及password进行编译
+
+暂未适配通过配置文件配置以及加密
