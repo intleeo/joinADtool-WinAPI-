@@ -13,7 +13,7 @@ joinADtoolstest::joinADtoolstest(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-    this->setWindowFlags(Qt::WindowCloseButtonHint);//È¥µô×î´ó»¯¡¢×îÐ¡»¯°´Å¥£¬±£Áô¹Ø±Õ°´Å¥
+    this->setWindowFlags(Qt::WindowCloseButtonHint);//åŽ»æŽ‰æœ€å¤§åŒ–ã€æœ€å°åŒ–æŒ‰é’®ï¼Œä¿ç•™å…³é—­æŒ‰é’®
 }
 
 joinADtoolstest::~joinADtoolstest()
@@ -23,16 +23,16 @@ joinADtoolstest::~joinADtoolstest()
 void joinADtoolstest::on_pushButton_clicked() 
 {
     NET_API_STATUS WINAPI status;
-    status = NetJoinDomain(NULL, L"hf.huafangtec.cn", NULL, L"lilei-hj", L"woshililei4613@", NETSETUP_JOIN_DOMAIN | NETSETUP_ACCT_CREATE);
+    status = NetJoinDomain(NULL, L"ADdomain", NULL, L"username", L"password", NETSETUP_JOIN_DOMAIN | NETSETUP_ACCT_CREATE);
 
     if (status == NERR_Success) {
-        // º¯Êýµ÷ÓÃ³É¹¦£¬¼ÆËã»úÒÑ³É¹¦ÍË³öÓò
-        // ´´½¨°üº¬³É¹¦ÐÅÏ¢µÄµ¯´°
+        // å‡½æ•°è°ƒç”¨æˆåŠŸï¼Œè®¡ç®—æœºå·²æˆåŠŸé€€å‡ºåŸŸ
+        // åˆ›å»ºåŒ…å«æˆåŠŸä¿¡æ¯çš„å¼¹çª—
         QMessageBox::information(this, tr("Success"), tr("Computer unjoined domain successfully!"));
     }
     else {
-        // º¯Êýµ÷ÓÃÊ§°Ü£¬¿ÉÒÔ¸ù¾Ý¾ßÌåµÄ´íÎó´úÂë½øÐÐ´¦Àí
-        // ´´½¨°üº¬Ê§°ÜÐÅÏ¢ºÍ´íÎó´úÂëµÄµ¯´°
+        // å‡½æ•°è°ƒç”¨å¤±è´¥ï¼Œå¯ä»¥æ ¹æ®å…·ä½“çš„é”™è¯¯ä»£ç è¿›è¡Œå¤„ç†
+        // åˆ›å»ºåŒ…å«å¤±è´¥ä¿¡æ¯å’Œé”™è¯¯ä»£ç çš„å¼¹çª—
         QMessageBox::critical(this, tr("Error"), tr("Failed to unjoin domain. Error code: %1").arg(status));
     }
 };
@@ -40,16 +40,16 @@ void joinADtoolstest::on_pushButton_clicked()
 void joinADtoolstest::on_pushButton_2_clicked()
 {
     NET_API_STATUS status;
-    status = NetUnjoinDomain(NULL, L"lilei-hj", L"woshililei4613@", NETSETUP_ACCT_DELETE);
+    status = NetUnjoinDomain(NULL, L"username", L"password", NETSETUP_ACCT_DELETE);
 
     if (status == NERR_Success) {
-        // º¯Êýµ÷ÓÃ³É¹¦£¬¼ÆËã»úÒÑ³É¹¦ÍË³öÓò
-        // ´´½¨°üº¬³É¹¦ÐÅÏ¢µÄµ¯´°
+        // å‡½æ•°è°ƒç”¨æˆåŠŸï¼Œè®¡ç®—æœºå·²æˆåŠŸé€€å‡ºåŸŸ
+        // åˆ›å»ºåŒ…å«æˆåŠŸä¿¡æ¯çš„å¼¹çª—
         QMessageBox::information(this, tr("Success"), tr("Computer unjoined domain successfully!"));
     }
     else {
-        // º¯Êýµ÷ÓÃÊ§°Ü£¬¿ÉÒÔ¸ù¾Ý¾ßÌåµÄ´íÎó´úÂë½øÐÐ´¦Àí
-        // ´´½¨°üº¬Ê§°ÜÐÅÏ¢ºÍ´íÎó´úÂëµÄµ¯´°
+        // å‡½æ•°è°ƒç”¨å¤±è´¥ï¼Œå¯ä»¥æ ¹æ®å…·ä½“çš„é”™è¯¯ä»£ç è¿›è¡Œå¤„ç†
+        // åˆ›å»ºåŒ…å«å¤±è´¥ä¿¡æ¯å’Œé”™è¯¯ä»£ç çš„å¼¹çª—
         QMessageBox::critical(this, tr("Error"), tr("Failed to unjoin domain. Error code: %1").arg(status));
     }
 };
@@ -59,7 +59,7 @@ void joinADtoolstest::on_pushButton_3_clicked()
     if (ui.lineEdit->text() != "")
     {
         QStringList args;
-        args << "localgroup" << "administrators" << ui.lineEdit->text() << "/add";
+        args << "localgroup" << "administrators" << ui.lineEdit->text() << "/add";//ç”¨æˆ·åŠ å…¥administerç»„
 
         QProcess process;
         process.start("net", args);
@@ -77,13 +77,13 @@ void joinADtoolstest::on_pushButton_3_clicked()
     }
     else
     {
-        QMessageBox::information(this, QString::fromLocal8Bit("Tips"), QString::fromLocal8Bit("The user name cannot be empty.(ÓÃ»§Ãû²»ÄÜÎª¿Õ!)"));//µ¯´°
+        QMessageBox::information(this, QString::fromLocal8Bit("Tips"), QString::fromLocal8Bit("The user name cannot be empty.(ç”¨æˆ·åä¸èƒ½ä¸ºç©º!)"));//å¼¹çª—
     }
 };
 void joinADtoolstest::on_pushButton_4_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, QString::fromLocal8Bit("È·ÈÏ¹Ø»ú"), QString::fromLocal8Bit("ÄúÈ·¶¨ÒªÖØÆô¼ÆËã»úÂð£¿"),
+    reply = QMessageBox::question(this, QString::fromLocal8Bit("ç¡®è®¤å…³æœº"), QString::fromLocal8Bit("æ‚¨ç¡®å®šè¦é‡å¯è®¡ç®—æœºå—ï¼Ÿ"),
         QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
        /* QProcess process;
